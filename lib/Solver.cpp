@@ -10,16 +10,21 @@ Solver::Solver(const std::vector<unsigned> &numbers, unsigned int partition_coun
     : _numbers(numbers), _partition_count(partition_count) {
 }
 
-std::map<unsigned int,std::vector<unsigned int>> Solver::get_partitions() {
+Solver::Result Solver::get_partitions() {
     if (_numbers.empty() || _partition_count == 0) {
         return {};
     }
 
     if (_partition_count == 1) {
-        return { {1, _numbers} };
+        return {
+            .partitions = {{1, _numbers}},
+            .optimal_max = std::accumulate(_numbers.begin(), _numbers.end(), 0u) };
     }
 
-    return partition(_numbers, _partition_count, find_optimum(_numbers, _partition_count));
+    const auto opt_max = find_optimal_max(_numbers, _partition_count);
+    return {
+        .partitions = partition(_numbers, _partition_count, opt_max),
+        .optimal_max = opt_max};
 }
 
 bool Solver::can_be_partitioned(
@@ -44,7 +49,7 @@ bool Solver::can_be_partitioned(
     return true;
 }
 
-unsigned int Solver::find_optimum(
+unsigned int Solver::find_optimal_max(
     const std::vector<unsigned> &numbers,
     unsigned int partition_count) {
 

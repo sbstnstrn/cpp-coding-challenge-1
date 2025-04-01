@@ -6,9 +6,14 @@
 
 class Solver {
 public:
-    Solver(const std::vector<unsigned int> &numbers, unsigned int partition_count);
 
-    std::map<unsigned int,std::vector<unsigned int>> get_partitions();
+    struct Result {
+        std::map<unsigned int,std::vector<unsigned int>> partitions;
+        unsigned int optimal_max = 0;
+    };
+
+    Solver(const std::vector<unsigned int> &numbers, unsigned int partition_count);
+    Result get_partitions();
 
 private:
     static bool can_be_partitioned(
@@ -16,7 +21,7 @@ private:
         unsigned int partition_count,
         unsigned int max_value);
 
-    static unsigned int find_optimum(
+    static unsigned int find_optimal_max(
         const std::vector<unsigned int> &numbers,
         unsigned int partition_count);
 

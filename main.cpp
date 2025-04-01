@@ -41,10 +41,11 @@ int main() {
     }
 
     Solver solver(numbers, days);
-    auto result = solver.get_partitions();
+    const auto result = solver.get_partitions();
 
+    std::cout << "Die optimale maximale Strecke ist: " << result.optimal_max << std::endl;
     std::cout << "Die Etappen sind:" << std::endl;
-    for (const auto& [key, value] : result) {
+    for (const auto& [key, value] : result.partitions) {
         std::cout << "Etappe " << key << ": ";
         for (const auto& num : value) {
             std::cout << num << " ";
